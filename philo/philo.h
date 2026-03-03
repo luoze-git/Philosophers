@@ -31,6 +31,9 @@ typedef struct s_philo_child1{
 	int* pointer_to_global;
 } t_philo_child1;
 
+int check_args_legitimacy(int argc, char **argv);
+int init_ctl(t_control_philo0 *ctl);
+long get_current_time_in_ms(void);
 // /* Allowed external functions (mandatory) 
 // extern void	*memset(void *s, int c, size_t n);
 // extern int	printf(const char *format, ...);
