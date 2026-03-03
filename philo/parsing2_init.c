@@ -7,22 +7,20 @@
 
 static void load_ctl_from_args(t_control_philo0 *ctl, int argc, char **argv)
 {
-    ctl->number_philo = ft_atoi_only_transform_legit_num(argv[1]);
-    ctl->time_to_die = ft_atoi_only_transform_legit_num(argv[2]);
-    ctl->time_to_eat = ft_atoi_only_transform_legit_num(argv[3]);
-    ctl->time_to_sleep = ft_atoi_only_transform_legit_num(argv[4]);
+    ctl->number_philo = ft_atol_assume_legit_input(argv[1]);
+    ctl->time_to_die = ft_atol_assume_legit_input(argv[2]);
+    ctl->time_to_eat = ft_atol_assume_legit_input(argv[3]);
+    ctl->time_to_sleep = ft_atol_assume_legit_input(argv[4]);
     if (argc == 6)
-        ctl->must_eat_count = ft_atoi_only_transform_legit_num(argv[5]);
+        ctl->must_eat_count = ft_atol_assume_legit_input(argv[5]);
 }
-
-
 
 // todo3: destruct all mutex before free mem and after unlocked and not in use.
 static int init_mutex(t_control_philo0 *ctl)
 {
     int i;
-    i =0 ;
-    while(i < ctl->number_philo)
+    i = 0;
+    while (i < ctl->number_philo)
     {
         if (pthread_mutex_init(ctl->forks + i, NULL) != 0)
             return 1;
@@ -35,10 +33,10 @@ static int init_mutex(t_control_philo0 *ctl)
     return 0;
 }
 
-int init_ctl(t_control_philo0 *ctl)
+static int init_ctl(t_control_philo0 *ctl)
 {
     ctl->start_time = get_current_time_in_ms();
-    if ( ctl->start_time == -1)
+    if (ctl->start_time == -1)
         return 1;
     ctl->stop_flag = 0;
     // first malloc fail and no need to clean;
@@ -48,8 +46,21 @@ int init_ctl(t_control_philo0 *ctl)
         printf("malloc failed at mutex");
         return 1;
     }
-    // init mutex 
+    // init mutex
     if (init_mutex(ctl))
         return 1;
     return 0;
+}
+
+int parse_args(t_control_philo0 *ctl, int argc, char **argv)
+{
+    if (check_args_legitimacy(argc, argv))
+    {
+        printf("this is not acceptible for me for a reason stated above.");
+        return 1;
+    }
+    load_ctl_from_args(ctl, argc, argv);
+    if (init_ctl(ctl))
+        return 1;
+    return (0);
 }

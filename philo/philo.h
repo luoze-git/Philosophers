@@ -3,6 +3,8 @@
 
 #include <pthread.h>
 #include <stddef.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <sys/time.h>
 #include <sys/types.h>
 #include <limits.h>
@@ -16,25 +18,28 @@ typedef struct s_control_philo0
 	int must_eat_count;
 	long start_time;
 	int stop_flag;
-	pthread_mutex_t* forks;
+	pthread_mutex_t *forks;
 	pthread_mutex_t printf_mutex;
 	pthread_mutex_t stop_flag_mutex;
 } t_control_philo0;
 
-typedef struct s_philo_child1{
+typedef struct s_philo_child1
+{
 	int id;
-	int* left_fork;
-	int* right_fork;
+	int *left_fork;
+	int *right_fork;
 	int thread_id;
-	int* last_meal;
-	int* meals_eaten;
-	int* pointer_to_global;
+	int *last_meal;
+	int *meals_eaten;
+	int *pointer_to_global;
 } t_philo_child1;
 
+int parse_args(t_control_philo0 *ctl, int argc, char **argv);
 int check_args_legitimacy(int argc, char **argv);
-int init_ctl(t_control_philo0 *ctl);
 long get_current_time_in_ms(void);
-// /* Allowed external functions (mandatory) 
+long ft_atol_assume_legit_input(char *str);
+
+// /* Allowed external functions (mandatory)
 // extern void	*memset(void *s, int c, size_t n);
 // extern int	printf(const char *format, ...);
 // extern void	*malloc(size_t size);
