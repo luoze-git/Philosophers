@@ -2,3 +2,4 @@ Philosophers.pdf
 .venv
 test_*
 a.out
+*.excalidraw

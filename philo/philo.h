@@ -9,7 +9,7 @@
 #include <sys/types.h>
 #include <limits.h>
 
-typedef struct s_control_philo0
+typedef struct s_control_philo
 {
 	int number_philo;
 	int time_to_die;
@@ -21,23 +21,28 @@ typedef struct s_control_philo0
 	pthread_mutex_t *forks;
 	pthread_mutex_t printf_mutex;
 	pthread_mutex_t stop_flag_mutex;
-} t_control_philo0;
+	t_philo_child *philos;
+} t_control_philo;
 
-typedef struct s_philo_child1
+typedef struct s_philo_child
 {
 	int id;
-	int *left_fork;
-	int *right_fork;
-	int thread_id;
-	int *last_meal;
-	int *meals_eaten;
-	int *pointer_to_global;
-} t_philo_child1;
-
-int parse_args(t_control_philo0 *ctl, int argc, char **argv);
+	pthread_t thread_id;
+	pthread_mutex_t *left_fork;
+	pthread_mutex_t *right_fork;
+	long last_meal_time;
+	int meals_eaten;
+	t_control_philo *ctl_ptr;
+} t_philo_child;
+/*parse*/
+int parse_args(t_control_philo *ctl, int argc, char **argv);
 int check_args_legitimacy(int argc, char **argv);
 long get_current_time_in_ms(void);
 long ft_atol_assume_legit_input(char *str);
+
+/*init before spawning threads*/
+int init_philos_struct(t_control_philo *ctl);
+
 
 // /* Allowed external functions (mandatory)
 // extern void	*memset(void *s, int c, size_t n);

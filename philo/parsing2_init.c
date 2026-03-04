@@ -5,7 +5,7 @@
 ./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]
 */
 
-static void load_ctl_from_args(t_control_philo0 *ctl, int argc, char **argv)
+static void load_ctl_from_args(t_control_philo *ctl, int argc, char **argv)
 {
     ctl->number_philo = ft_atol_assume_legit_input(argv[1]);
     ctl->time_to_die = ft_atol_assume_legit_input(argv[2]);
@@ -16,7 +16,7 @@ static void load_ctl_from_args(t_control_philo0 *ctl, int argc, char **argv)
 }
 
 // todo3: destruct all mutex before free mem and after unlocked and not in use.
-static int init_mutex(t_control_philo0 *ctl)
+static int init_mutex(t_control_philo *ctl)
 {
     int i;
     i = 0;
@@ -33,7 +33,7 @@ static int init_mutex(t_control_philo0 *ctl)
     return 0;
 }
 
-static int init_ctl(t_control_philo0 *ctl)
+static int init_ctl(t_control_philo *ctl)
 {
     ctl->start_time = get_current_time_in_ms();
     if (ctl->start_time == -1)
@@ -52,7 +52,7 @@ static int init_ctl(t_control_philo0 *ctl)
     return 0;
 }
 
-int parse_args(t_control_philo0 *ctl, int argc, char **argv)
+int parse_args(t_control_philo *ctl, int argc, char **argv)
 {
     if (check_args_legitimacy(argc, argv))
     {
