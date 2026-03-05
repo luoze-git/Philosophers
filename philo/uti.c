@@ -28,3 +28,12 @@ long ft_atol_assume_legit_input(char *str)
     }
     return (result);
 }
+
+void print_eater_state(t_eater *eater, char *msg)
+{
+    long timestamp;
+    timestamp = get_current_time_in_ms() - eater->ptr_mona->start_time;
+    pthread_mutex_lock(&eater->ptr_mona->printf_mutex);
+    printf("%ld %d %s\n", timestamp, eater->id, msg);
+    pthread_mutex_unlock(&eater->ptr_mona->printf_mutex);
+}
