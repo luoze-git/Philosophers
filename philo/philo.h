@@ -9,40 +9,46 @@
 #include <sys/types.h>
 #include <limits.h>
 
-typedef struct s_control_philo
+typedef struct s_eater
 {
-	int number_philo;
+	int id;
+	long last_meal_time;
+	int meals_eaten;
+	pthread_t thread_id;
+	pthread_mutex_t *right_fork;
+	pthread_mutex_t *left_fork;
+	t_monitor *ptr_mona;
+} t_eater;
+
+typedef struct s_monitor
+{
+	int num_eater;
 	int time_to_die;
 	int time_to_eat;
 	int time_to_sleep;
 	int must_eat_count;
-	long start_time;
 	int stop_flag;
+	long start_time;
 	pthread_mutex_t *forks;
 	pthread_mutex_t printf_mutex;
 	pthread_mutex_t stop_flag_mutex;
-	t_philo_child *philos;
-} t_control_philo;
+	t_eater *eater;
+	pthread_t monitor_thread;
+} t_monitor;
 
-typedef struct s_philo_child
-{
-	int id;
-	pthread_t thread_id;
-	pthread_mutex_t *left_fork;
-	pthread_mutex_t *right_fork;
-	long last_meal_time;
-	int meals_eaten;
-	t_control_philo *ctl_ptr;
-} t_philo_child;
-/*parse*/
-int parse_args(t_control_philo *ctl, int argc, char **argv);
-int check_args_legitimacy(int argc, char **argv);
+
+
+int parse_args(t_monitor *ctl, int argc, char **argv);
+int prep_mona_n_eaters_pre_threads(t_monitor *mona);
+
+
+
+
 long get_current_time_in_ms(void);
-long ft_atol_assume_legit_input(char *str);
+
+
 
 /*init before spawning threads*/
-int init_philos_struct(t_control_philo *ctl);
-
 
 // /* Allowed external functions (mandatory)
 // extern void	*memset(void *s, int c, size_t n);
