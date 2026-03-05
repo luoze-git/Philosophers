@@ -1,36 +1,5 @@
 #include "philo.h"
 
-int detect_liveness(t_monitor *mona)
-{
-}
-
-int update_eating_states(t_monitor *mona)
-{
-}
-
-int report_eater_state(t_monitor *mona, char *msg)
-{
-}
-
-void *eater_routine(void *arg)
-{
-    t_eater *philo;
-
-    philo = (t_eater *)arg;
-    while (mona->stop_flag != 1)
-    {
-        think(philo);
-        eat(philo);
-        sleep_philo(philo);
-    }
-    return (NULL);
-}
-
-int monitor_routine(t_monitor * mona)
-{
-
-}
-
 /*int pthread_create(
     pthread_t *thread,
     const pthread_attr_t *attr,
@@ -38,7 +7,6 @@ int monitor_routine(t_monitor * mona)
     void *arg
 );
 */
-
 void create_threads(t_monitor *mona)
 {
     int i;
@@ -54,7 +22,7 @@ void create_threads(t_monitor *mona)
 }
 
 /*control philo , philosss;  main born and recevie and cleanup , monitor death , philo eaters*/
-void start_simulation(t_monitor *mona);
+void start_simulation(t_monitor *mona)
 {
     create_threads(mona);
 }
