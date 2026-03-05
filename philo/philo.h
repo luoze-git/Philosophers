@@ -12,7 +12,7 @@
 typedef struct s_eater
 {
 	int id;
-	long last_meal_time;
+	long last_eating_time;
 	int meals_eaten;
 	pthread_t thread_id;
 	pthread_mutex_t *right_fork;
@@ -36,18 +36,15 @@ typedef struct s_monitor
 	pthread_t monitor_thread;
 } t_monitor;
 
-
-
 int parse_args(t_monitor *ctl, int argc, char **argv);
 int prep_mona_n_eaters_pre_threads(t_monitor *mona);
 
-
-
-
+long ft_atol_assume_legit_input(char *str);
 long get_current_time_in_ms(void);
+void print_eater_state(t_eater *eater, char *msg);
 
-
-
+void *monitor_routine(void *arg);
+void *eater_routine(void *arg);
 /*init before spawning threads*/
 
 // /* Allowed external functions (mandatory)

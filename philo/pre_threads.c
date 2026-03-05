@@ -15,7 +15,7 @@ static int init_eaters(t_monitor *mona)
         eater[i].ptr_mona = mona;
         eater[i].right_fork = mona->forks + i;
         eater[i].left_fork = mona->forks + ((i + 1) % mona->num_eater);
-        eater->last_meal_time = -1;
+        eater->last_eating_time = -1;
         eater->meals_eaten = 0;
         eater->ptr_mona = mona;
         i++;
@@ -66,7 +66,6 @@ int malloc_d_eaters_forks(t_monitor *mona)
         return 1;
 }
 
-
 // initiate up the monitor struct along with the main needed identity information.
 //
 // todo3: clean here if malloc fail
@@ -80,5 +79,3 @@ int prep_mona_n_eaters_pre_threads(t_monitor *mona)
         return 1;
     return 0;
 }
-
-

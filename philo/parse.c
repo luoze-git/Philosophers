@@ -20,8 +20,8 @@ static int check_chars_are_numeric_and_positive(int argc, char **argv)
     }
     return (0);
 }
-//todo: check init fully
-// int int int int int check int types. all args is specified to be int.
+// todo: check init fully
+//  int int int int int check int types. all args is specified to be int.
 static int check_numeric_args_overflow(int argc, char **argv)
 {
     long result;
@@ -88,9 +88,9 @@ static void load_parsed_args(t_monitor *mona, int argc, char **argv)
 }
 
 /// @brief Precheck input satisfy the format. Then load the args into mona.
-/// @param mona 
-/// @param argc 
-/// @param argv 
+/// @param mona
+/// @param argc
+/// @param argv
 /// @return 0 if suc. 1 if failed.
 int parse_args(t_monitor *mona, int argc, char **argv)
 {
