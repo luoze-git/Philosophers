@@ -1,6 +1,7 @@
 #ifndef PHILO_H
 #define PHILO_H
 
+#include <unistd.h>
 #include <pthread.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -9,10 +10,12 @@
 #include <sys/types.h>
 #include <limits.h>
 
+typedef struct s_monitor t_monitor;
+
 typedef struct s_eater
 {
 	int id;
-	long last_eating_time;
+	long last_eating_time_abs;
 	int meals_eaten;
 	pthread_t thread_id;
 	pthread_mutex_t *right_fork;
@@ -29,7 +32,7 @@ typedef struct s_monitor
 	int time_to_sleep;
 	int must_eat_count;
 	int stop_flag;
-	long start_time;
+	long start_time_abs;
 	pthread_mutex_t *forks;
 	pthread_mutex_t printf_mutex;
 	pthread_mutex_t stop_flag_mutex;
@@ -37,11 +40,11 @@ typedef struct s_monitor
 	pthread_t monitor_thread;
 } t_monitor;
 
-int parse_args(t_monitor *ctl, int argc, char **argv);
+int parse_args(t_monitor *mona, int argc, char **argv);
 int prep_mona_n_eaters_pre_threads(t_monitor *mona);
 
 long ft_atol_assume_legit_input(char *str);
-long get_current_time_in_ms(void);
+long get_current_absolute_time_in_ms(void);
 int stop_simulation_by_reading_stop_flag(t_eater *eater);
 void print_live_state(t_eater *eater, char *msg);
 void print_death_state(t_eater *eater, char *msg);

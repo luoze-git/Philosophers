@@ -1,10 +1,9 @@
 #include "philo.h"
 
-// update into absolute time
 void update_last_eating_time(t_eater *eater)
 {
     pthread_mutex_lock(&eater->meal_state);
-    eater->last_eating_time = get_current_time_in_ms();
+    eater->last_eating_time_abs = get_current_absolute_time_in_ms();
     pthread_mutex_unlock(&eater->meal_state);
 }
 
@@ -50,29 +49,19 @@ void *eater_routine(void *arg)
     t_eater *eater;
 
     eater = (t_eater *)arg;
-    while (eater->ptr_mona->num_eater == 1 && !stop_simulation_by_reading_stop_flag(eater))
-    {
-        think(eater);
-        pthread_mutex_lock(eater->left_fork);
-        print_live_state(eater, "has taken a fork.");
-    }
-    return NULL;
 
-    if (eater->id % 2 == 0)
-        usleep(1000);
+    // if (eater->id % 2 == 0)
+    //     usleep(1000);
     if (eater->ptr_mona->num_eater > 1)
     {
         while (!stop_simulation_by_reading_stop_flag(eater))
         {
-            think(eater);
             eat(eater);
             sleep_eater(eater);
+            think(eater);
         }
     }
     else
-    {
-        think(eater);
         lonely_eater(eater);
-    }
     return (NULL);
 }

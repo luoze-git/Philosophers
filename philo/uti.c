@@ -1,7 +1,7 @@
 #include "philo.h"
 
 // get current time and transform it to milliseconds. return -1 on error
-long get_current_time_in_ms(void)
+long get_current_absolute_time_in_ms(void)
 {
     long now;
     struct timeval tv;
@@ -32,12 +32,12 @@ long ft_atol_assume_legit_input(char *str)
 void print_live_state(t_eater *eater, char *msg)
 {
     long timestamp;
-    timestamp = get_current_time_in_ms() - eater->ptr_mona->start_time;
+    timestamp = get_current_absolute_time_in_ms() - eater->ptr_mona->start_time_abs;
 
     if (!stop_simulation_by_reading_stop_flag(eater))
     {
         pthread_mutex_lock(&eater->ptr_mona->printf_mutex);
-        printf("%ld %d %s\n", timestamp, eater->id, msg);
+        printf("%ld %d %s\n", timestamp, eater->id + 1, msg);
         pthread_mutex_unlock(&eater->ptr_mona->printf_mutex);
     }
 }
@@ -45,14 +45,13 @@ void print_live_state(t_eater *eater, char *msg)
 void print_death_state(t_eater *eater, char *msg)
 {
     long timestamp;
-    timestamp = get_current_time_in_ms() - eater->ptr_mona->start_time;
+    timestamp = get_current_absolute_time_in_ms() - eater->ptr_mona->start_time_abs;
     pthread_mutex_lock(&eater->ptr_mona->printf_mutex);
-    printf("%ld %d %s\n", timestamp, eater->id, msg);
+    printf("%ld %d %s\n", timestamp, eater->id + 1, msg);
     pthread_mutex_unlock(&eater->ptr_mona->printf_mutex);
 }
 int stop_simulation_by_reading_stop_flag(t_eater *eater)
 {
-    int stop_flag;
     pthread_mutex_lock(&eater->ptr_mona->stop_flag_mutex);
     if (eater->ptr_mona->stop_flag)
     {

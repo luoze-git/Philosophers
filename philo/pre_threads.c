@@ -15,13 +15,23 @@ static int init_eaters(t_monitor *mona)
         eater[i].ptr_mona = mona;
         eater[i].right_fork = mona->forks + i;
         eater[i].left_fork = mona->forks + ((i + 1) % mona->num_eater);
-        eater->last_eating_time = 0;
+        eater->last_eating_time_abs = eater->ptr_mona->start_time_abs;
         eater->meals_eaten = 0;
         eater->ptr_mona = mona;
         if (pthread_mutex_init(&eater->meal_state, NULL) != 0)
             return 1;
         i++;
     }
+    return 0;
+}
+
+// todo3: destruct all mutex before free mem and after unlocked and not in use.
+static int init_for_printf_n_stopschild(t_monitor *mona)
+{
+    if (pthread_mutex_init(&mona->printf_mutex, NULL) != 0)
+        return 1;
+    if (pthread_mutex_init(&mona->stop_flag_mutex, NULL) != 0)
+        return 1;
     return 0;
 }
 
@@ -38,23 +48,13 @@ int init_mona(t_monitor *mona)
     if (init_for_printf_n_stopschild(mona))
         return 1;
     mona->stop_flag = 0;
-    mona->start_time = get_current_time_in_ms();
-    if (mona->start_time == -1)
+    mona->start_time_abs = get_current_absolute_time_in_ms();
+    if (mona->start_time_abs == -1)
         return 1;
     return 0;
 }
 
-// todo3: destruct all mutex before free mem and after unlocked and not in use.
-int init_for_printf_n_stopschild(t_monitor *mona)
-{
-    if (pthread_mutex_init(&mona->printf_mutex, NULL) != 0)
-        return 1;
-    if (pthread_mutex_init(&mona->stop_flag_mutex, NULL) != 0)
-        return 1;
-    return 0;
-}
-
-int malloc_d_eaters_forks(t_monitor *mona)
+static int malloc_d_eaters_n_forks(t_monitor *mona)
 {
     mona->forks = malloc(mona->num_eater * sizeof(pthread_mutex_t));
     if (!(mona->forks))
@@ -66,6 +66,7 @@ int malloc_d_eaters_forks(t_monitor *mona)
     mona->eater = malloc(mona->num_eater * sizeof(t_eater));
     if (!mona->eater)
         return 1;
+    return 0;
 }
 
 // initiate up the monitor struct along with the main needed identity information.
