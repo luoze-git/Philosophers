@@ -7,7 +7,7 @@ long get_current_time_in_ms(void)
     struct timeval tv;
     if (gettimeofday(&tv, NULL) == -1)
         return -1;
-    now = 1000 * tv.tv_sec + tv.tv_usec/1000;
+    now = 1000 * tv.tv_sec + tv.tv_usec / 1000;
     return now;
 }
 
@@ -29,11 +29,36 @@ long ft_atol_assume_legit_input(char *str)
     return (result);
 }
 
-void print_eater_state(t_eater *eater, char *msg)
+void print_live_state(t_eater *eater, char *msg)
+{
+    long timestamp;
+    timestamp = get_current_time_in_ms() - eater->ptr_mona->start_time;
+
+    if (!stop_simulation_by_reading_stop_flag(eater))
+    {
+        pthread_mutex_lock(&eater->ptr_mona->printf_mutex);
+        printf("%ld %d %s\n", timestamp, eater->id, msg);
+        pthread_mutex_unlock(&eater->ptr_mona->printf_mutex);
+    }
+}
+
+void print_death_state(t_eater *eater, char *msg)
 {
     long timestamp;
     timestamp = get_current_time_in_ms() - eater->ptr_mona->start_time;
     pthread_mutex_lock(&eater->ptr_mona->printf_mutex);
     printf("%ld %d %s\n", timestamp, eater->id, msg);
     pthread_mutex_unlock(&eater->ptr_mona->printf_mutex);
+}
+int stop_simulation_by_reading_stop_flag(t_eater *eater)
+{
+    int stop_flag;
+    pthread_mutex_lock(&eater->ptr_mona->stop_flag_mutex);
+    if (eater->ptr_mona->stop_flag)
+    {
+        pthread_mutex_unlock(&eater->ptr_mona->stop_flag_mutex);
+        return 1;
+    }
+    pthread_mutex_unlock(&eater->ptr_mona->stop_flag_mutex);
+    return 0;
 }
