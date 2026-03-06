@@ -17,6 +17,7 @@ typedef struct s_eater
 	pthread_t thread_id;
 	pthread_mutex_t *right_fork;
 	pthread_mutex_t *left_fork;
+	pthread_mutex_t meal_state;
 	t_monitor *ptr_mona;
 } t_eater;
 
@@ -41,7 +42,9 @@ int prep_mona_n_eaters_pre_threads(t_monitor *mona);
 
 long ft_atol_assume_legit_input(char *str);
 long get_current_time_in_ms(void);
-void print_eater_state(t_eater *eater, char *msg);
+int stop_simulation_by_reading_stop_flag(t_eater *eater);
+void print_live_state(t_eater *eater, char *msg);
+void print_death_state(t_eater *eater, char *msg);
 
 void *monitor_routine(void *arg);
 void *eater_routine(void *arg);
