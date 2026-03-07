@@ -48,7 +48,7 @@ long ft_atol_assume_legit_input(char *str);
 long get_current_absolute_time_in_ms(void);
 int stop_simulation_by_reading_stop_flag(t_eater *eater);
 void print_live_state(t_eater *eater, char *msg);
-void print_death_state(t_eater *eater, char *msg);
+void print_death_n_set_stop(t_eater *eater, char *msg);
 
 void *monitor_routine(void *arg);
 void *eater_routine(void *arg);
