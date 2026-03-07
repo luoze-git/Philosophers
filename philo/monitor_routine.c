@@ -22,9 +22,6 @@ int thread_is_dead(t_eater* eater, long time_to_die)
 
 int eaters_finish_eating(t_monitor *mona)
 {
-
-    if (mona->must_eat_count == 0)
-        return 1;
     pthread_mutex_lock(&mona->finished_eater_mutex);
     if (mona->finished_eater == mona->num_eater)
     {

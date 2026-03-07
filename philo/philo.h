@@ -31,8 +31,10 @@ typedef struct s_monitor
 	long time_to_eat;
 	long time_to_sleep;
 	int must_eat_count;
+	int finished_eater;
 	int stop_flag;
 	long start_time_abs;
+	pthread_mutex_t finished_eater_mutex;
 	pthread_mutex_t *forks;
 	pthread_mutex_t printf_mutex;
 	pthread_mutex_t stop_flag_mutex;

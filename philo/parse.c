@@ -88,6 +88,13 @@ static void load_parsed_args(t_monitor *mona, int argc, char **argv)
         mona->must_eat_count = -1;
 }
 
+// todo: confirm the return strategy
+int pre_terminate(t_monitor *mona)
+{
+    if (mona->must_eat_count == 0)
+        return 1;
+    return 0;
+}
 /// @brief Precheck input satisfy the format. Then load the args into mona.
 /// @param mona
 /// @param argc
@@ -101,5 +108,7 @@ int parse_args(t_monitor *mona, int argc, char **argv)
         return 1;
     }
     load_parsed_args(mona, argc, argv);
+    if (pre_terminate(mona))
+        return 2;
     return (0);
 }
