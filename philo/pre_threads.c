@@ -11,14 +11,14 @@ static int init_eaters(t_monitor *mona)
     eater = mona->eater;
     while (i < mona->num_eater)
     {
-        eater[i].id = i;
+        eater[i].id = i+1;
         eater[i].ptr_mona = mona;
         eater[i].right_fork = mona->forks + i;
         eater[i].left_fork = mona->forks + ((i + 1) % mona->num_eater);
-        eater->last_eating_time_abs = eater->ptr_mona->start_time_abs;
-        eater->meals_eaten = 0;
-        eater->ptr_mona = mona;
-        if (pthread_mutex_init(&eater->meal_state, NULL) != 0)
+        eater[i].last_eating_time_abs = eater->ptr_mona->start_time_abs;
+        eater[i].meals_eaten = 0;
+        eater[i].ptr_mona = mona;
+        if (pthread_mutex_init(&eater[i].meal_state, NULL) != 0)
             return 1;
         i++;
     }
