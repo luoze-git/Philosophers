@@ -26,11 +26,13 @@ static int init_eaters(t_monitor *mona)
 }
 
 // todo3: destruct all mutex before free mem and after unlocked and not in use.
-static int init_for_printf_n_stopschild(t_monitor *mona)
+static int init_for_printf_n_stop_flag_n_finished(t_monitor *mona)
 {
     if (pthread_mutex_init(&mona->printf_mutex, NULL) != 0)
         return 1;
     if (pthread_mutex_init(&mona->stop_flag_mutex, NULL) != 0)
+        return 1;
+    if (pthread_mutex_init(&mona->finished_eater_mutex, NULL) != 0)
         return 1;
     return 0;
 }
@@ -45,9 +47,10 @@ int init_mona(t_monitor *mona)
             return 1;
         i++;
     }
-    if (init_for_printf_n_stopschild(mona))
+    if (init_for_printf_n_stop_flag_n_finished(mona))
         return 1;
     mona->stop_flag = 0;
+    mona->finished_eater = 0;
     mona->start_time_abs = get_current_absolute_time_in_ms();
     if (mona->start_time_abs == -1)
         return 1;
