@@ -11,7 +11,7 @@ static int init_eaters(t_monitor *mona)
     eater = mona->eater;
     while (i < mona->num_eater)
     {
-        eater[i].id = i+1;
+        eater[i].id = i + 1;
         eater[i].ptr_mona = mona;
         eater[i].right_fork = mona->forks + i;
         eater[i].left_fork = mona->forks + ((i + 1) % mona->num_eater);
@@ -28,9 +28,7 @@ static int init_eaters(t_monitor *mona)
 // todo3: destruct all mutex before free mem and after unlocked and not in use.
 static int init_for_printf_n_stop_flag_n_finished(t_monitor *mona)
 {
-    if (pthread_mutex_init(&mona->printf_mutex, NULL) != 0)
-        return 1;
-    if (pthread_mutex_init(&mona->stop_flag_mutex, NULL) != 0)
+    if (pthread_mutex_init(&mona->printf_n_stop_mutex, NULL) != 0)
         return 1;
     if (pthread_mutex_init(&mona->finished_eater_mutex, NULL) != 0)
         return 1;

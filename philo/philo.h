@@ -36,8 +36,7 @@ typedef struct s_monitor
 	long start_time_abs;
 	pthread_mutex_t finished_eater_mutex;
 	pthread_mutex_t *forks;
-	pthread_mutex_t printf_mutex;
-	pthread_mutex_t stop_flag_mutex;
+	pthread_mutex_t printf_n_stop_mutex;
 	t_eater *eater;
 	pthread_t monitor_thread;
 } t_monitor;

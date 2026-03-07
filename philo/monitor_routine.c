@@ -3,9 +3,9 @@
 
 static void set_stop_flag_with_mutex(t_monitor *mona)
 {
-    pthread_mutex_lock(&mona->stop_flag_mutex);
+    pthread_mutex_lock(&mona->printf_n_stop_mutex);
     mona->stop_flag = 1;
-    pthread_mutex_unlock(&mona->stop_flag_mutex);
+    pthread_mutex_unlock(&mona->printf_n_stop_mutex);
 }
 
 int thread_is_dead(t_eater* eater, long time_to_die)
