@@ -1,6 +1,7 @@
 #include "philo.h"
 
-/*this file is for checking the input legitimacy before parsing into struct*/
+/*this file is for checking the input legitimacy before parsing into struct. 
+ It allows size of integer arguments and storing them into long type variable. */
 static int check_chars_are_numeric_and_positive(int argc, char **argv)
 {
     int i;
@@ -22,7 +23,7 @@ static int check_chars_are_numeric_and_positive(int argc, char **argv)
 }
 // todo: check init fully
 //  int int int int int check int types. all args is specified to be int.
-static int check_numeric_args_overflow(int argc, char **argv)
+static int check_integer4B_overflow(int argc, char **argv)
 {
     long result;
     int i;
@@ -57,7 +58,7 @@ int check_args_legitimacy(int argc, char **argv)
         return (1);
     }
     // No overflow
-    if (check_numeric_args_overflow(argc, argv))
+    if (check_integer4B_overflow(argc, argv))
     {
         printf("integer overflows");
         return (1);
@@ -77,12 +78,12 @@ int check_args_legitimacy(int argc, char **argv)
 
 static void load_parsed_args(t_monitor *mona, int argc, char **argv)
 {
-    mona->num_eater = ft_atol_assume_legit_input(argv[1]);
+    mona->num_eater = (int) ft_atol_assume_legit_input(argv[1]);
     mona->time_to_die = ft_atol_assume_legit_input(argv[2]);
     mona->time_to_eat = ft_atol_assume_legit_input(argv[3]);
     mona->time_to_sleep = ft_atol_assume_legit_input(argv[4]);
     if (argc == 6)
-        mona->must_eat_count = ft_atol_assume_legit_input(argv[5]);
+        mona->must_eat_count = (int)ft_atol_assume_legit_input(argv[5]);
     else
         mona->must_eat_count = -1;
 }

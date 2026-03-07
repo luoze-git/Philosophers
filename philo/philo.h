@@ -27,9 +27,9 @@ typedef struct s_eater
 typedef struct s_monitor
 {
 	int num_eater;
-	int time_to_die;
-	int time_to_eat;
-	int time_to_sleep;
+	long time_to_die;
+	long time_to_eat;
+	long time_to_sleep;
 	int must_eat_count;
 	int stop_flag;
 	long start_time_abs;
