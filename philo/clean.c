@@ -19,7 +19,7 @@ void	destroy_eater_mutex(t_eater *eater, int num)
 	i = 0;
 	while (i < num)
 	{
-		pthread_mutex_destroy(&eater->meal_state);
+		pthread_mutex_destroy(&eater[i].meal_state);
 		i++;
 	}
 }
