@@ -2,6 +2,17 @@
 
 // todo: look into 1. why the name of left fork and right fork is needed - to simplify the problem.  2. circular fork is neater
 
+void destroy_eater_mutex(t_eater *eater, int num)
+{
+    int i;
+    i = 0;
+    while (i < num)
+    {
+        pthread_mutex_destroy(&eater->meal_state);
+        i++;
+    }
+}
+
 static int init_eaters(t_monitor *mona)
 {
     t_eater *eater;
@@ -20,7 +31,7 @@ static int init_eaters(t_monitor *mona)
         eater[i].ptr_mona = mona;
         if (pthread_mutex_init(&eater[i].meal_state, NULL) != 0)
         {
-            destroy_multi_mutex( &eater->meal_state, i);
+            destroy_eater_mutex(eater, i);
             return 1;
         }
         i++;
@@ -35,17 +46,17 @@ static int init_for_printf_n_stop_flag_n_finished(t_monitor *mona)
         return 1;
     if (pthread_mutex_init(&mona->finished_eater_mutex, NULL) != 0)
     {
-        pthread_mutex_destroy( &mona->printf_n_stop_mutex );
+        pthread_mutex_destroy(&mona->printf_n_stop_mutex);
         return 1;
     }
     return 0;
 }
 
-void destroy_multi_mutex(pthread_mutex_t * mutex, int num)
+void destroy_mutex_array(pthread_mutex_t *mutex, int num)
 {
     int i;
     i = 0;
-    while(i < num)
+    while (i < num)
     {
         pthread_mutex_destroy(&mutex[i]);
         i++;
@@ -60,14 +71,14 @@ int init_mona(t_monitor *mona)
     {
         if (pthread_mutex_init(&mona->forks[i], NULL) != 0)
         {
-            destroy_multi_mutex(mona->forks, i);
+            destroy_mutex_array(mona->forks, i);
             return 1;
-        }    
+        }
         i++;
     }
     if (init_for_printf_n_stop_flag_n_finished(mona))
     {
-        destroy_multi_mutex(mona->forks , mona->num_eater);
+        destroy_mutex_array(mona->forks, mona->num_eater);
         return 1;
     }
     mona->stop_flag = 0;
@@ -91,7 +102,7 @@ static int malloc_d_eaters_n_forks(t_monitor *mona)
     return 0;
 }
 
-void free_malloc_d(t_monitor *mona)
+void free_all_malloc_d(t_monitor *mona)
 {
     free(mona->forks);
     free(mona->eater);
@@ -99,7 +110,7 @@ void free_malloc_d(t_monitor *mona)
 
 void destroy_mona_mutex(t_monitor *mona)
 {
-    destroy_multi_mutex(mona->forks , mona->num_eater);
+    destroy_mutex_array(mona->forks, mona->num_eater);
     pthread_mutex_destroy(&mona->finished_eater_mutex);
     pthread_mutex_destroy(&mona->printf_n_stop_mutex);
 }
@@ -111,15 +122,15 @@ int prep_mona_n_eaters_pre_threads(t_monitor *mona)
     {
         write(2, "malloc failed\n", 14);
         return 1;
-    }    
+    }
     if (init_mona(mona))
     {
-        free_malloc_d(mona);
+        free_all_malloc_d(mona);
         return 1;
     }
     if (init_eaters(mona))
     {
-        free_malloc_d(mona);
+        free_all_malloc_d(mona);
         destroy_mona_mutex(mona);
         return 1;
     }

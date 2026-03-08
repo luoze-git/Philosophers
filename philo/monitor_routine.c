@@ -1,7 +1,7 @@
 
 #include "philo.h"
 
-static void set_stop_flag_with_mutex(t_monitor *mona)
+void set_stop_flag_with_mutex(t_monitor *mona)
 {
     pthread_mutex_lock(&mona->printf_n_stop_mutex);
     mona->stop_flag = 1;

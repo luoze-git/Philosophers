@@ -43,7 +43,7 @@ typedef struct s_monitor
 
 int parse_args(t_monitor *mona, int argc, char **argv);
 int prep_mona_n_eaters_pre_threads(t_monitor *mona);
-
+void destroy_eater_mutex(t_eater *eater, int num);
 long ft_atol_assume_legit_input(char *str);
 long get_current_absolute_time_in_ms(void);
 int stop_simulation_by_reading_stop_flag(t_eater *eater);
@@ -52,6 +52,13 @@ void print_death_n_set_stop(t_eater *eater, char *msg);
 
 void *monitor_routine(void *arg);
 void *eater_routine(void *arg);
+
+void set_stop_flag_with_mutex(t_monitor *mona);
+
+void free_all_malloc_d(t_monitor *mona);
+void destroy_mutex_array(pthread_mutex_t *mutex, int num);
+void destroy_mona_mutex(t_monitor *mona);
+
 /*init before spawning threads*/
 
 // /* Allowed external functions (mandatory)
