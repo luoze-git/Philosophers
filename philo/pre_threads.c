@@ -16,9 +16,8 @@ static int	init_eaters(t_monitor *mona)
 		eater[i].ptr_mona = mona;
 		eater[i].right_fork = mona->forks + i;
 		eater[i].left_fork = mona->forks + ((i + 1) % mona->num_eater);
-		eater[i].last_eating_time_abs = eater->ptr_mona->start_time_abs;
+		eater[i].last_eating_time_abs = mona->start_time_abs;
 		eater[i].meals_eaten = 0;
-		eater[i].ptr_mona = mona;
 		if (pthread_mutex_init(&eater[i].meal_state, NULL) != 0)
 		{
 			destroy_eater_mutex(eater, i);
