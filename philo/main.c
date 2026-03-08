@@ -7,7 +7,6 @@
 	void *arg
 );
 */
-// todo: test out with valgrind
 int	create_threads(t_monitor *mona)
 {
 	int		i;
@@ -70,14 +69,12 @@ void	normal_cleanup_all(t_monitor *mona)
 
 /*number_of_philosophers1 time_to_die time_to_eat time_to_sleep
 [number_of_times_each_philosopher_must_eat]*/
-int	main(void)
+
+int	main(int argc, char **argv)
 {
-	char		*test3[] = {"./philo", "7", "800", "200", "200", "3"};
 	t_monitor	mona;
 
-	// char *test1[] = {"./philo","1","800","200","200",NULL};
-	// char *test2[] = {"./philo","2","800","200","200",NULL};
-	if (parse_args(&mona, 6, test3))
+	if (parse_args(&mona, argc, argv))
 		return (1);
 	if (prep_mona_n_eaters_pre_threads(&mona))
 		return (1);

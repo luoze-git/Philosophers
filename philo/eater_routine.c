@@ -28,7 +28,7 @@ void	think(t_eater *eater)
 void	lonely_eater(t_eater *eater)
 {
 	pthread_mutex_lock(eater->left_fork);
-	print_live_state(eater, "has taken a fork.");
+	print_live_state(eater, "has taken a fork");
 	while (!stop_simulation_by_reading_stop_flag(eater))
 		usleep(eater->ptr_mona->time_to_die * 1000 / 10);
 	pthread_mutex_unlock(eater->left_fork);
@@ -44,16 +44,16 @@ void	eat(t_eater *eater)
 	if (eater->id % 2 == 0)
 	{
 		pthread_mutex_lock(eater->left_fork);
-		print_live_state(eater, "has taken a fork.");
+		print_live_state(eater, "has taken a fork");
 		pthread_mutex_lock(eater->right_fork);
-		print_live_state(eater, "has taken a fork.");
+		print_live_state(eater, "has taken a fork");
 	}
 	else
 	{
 		pthread_mutex_lock(eater->right_fork);
-		print_live_state(eater, "has taken a fork.");
+		print_live_state(eater, "has taken a fork");
 		pthread_mutex_lock(eater->left_fork);
-		print_live_state(eater, "has taken a fork.");
+		print_live_state(eater, "has taken a fork");
 	}
 	update_last_eating_time(eater);
 	print_live_state(eater, "is eating");
@@ -64,7 +64,7 @@ void	eat(t_eater *eater)
 
 void	sleep_eater(t_eater *eater)
 {
-	print_live_state(eater, "is sleeping.");
+	print_live_state(eater, "is sleeping");
 	usleep(eater->ptr_mona->time_to_sleep * 1000);
 }
 /*usleep() take microseconds*/
