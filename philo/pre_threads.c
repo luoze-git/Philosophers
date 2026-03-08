@@ -2,17 +2,6 @@
 
 // todo: look into 1. why the name of left fork and right fork is needed - to simplify the problem.  2. circular fork is neater
 
-void destroy_eater_mutex(t_eater *eater, int num)
-{
-    int i;
-    i = 0;
-    while (i < num)
-    {
-        pthread_mutex_destroy(&eater->meal_state);
-        i++;
-    }
-}
-
 static int init_eaters(t_monitor *mona)
 {
     t_eater *eater;
@@ -50,17 +39,6 @@ static int init_for_printf_n_stop_flag_n_finished(t_monitor *mona)
         return 1;
     }
     return 0;
-}
-
-void destroy_mutex_array(pthread_mutex_t *mutex, int num)
-{
-    int i;
-    i = 0;
-    while (i < num)
-    {
-        pthread_mutex_destroy(&mutex[i]);
-        i++;
-    }
 }
 
 int init_mona(t_monitor *mona)
@@ -102,18 +80,6 @@ static int malloc_d_eaters_n_forks(t_monitor *mona)
     return 0;
 }
 
-void free_all_malloc_d(t_monitor *mona)
-{
-    free(mona->forks);
-    free(mona->eater);
-}
-
-void destroy_mona_mutex(t_monitor *mona)
-{
-    destroy_mutex_array(mona->forks, mona->num_eater);
-    pthread_mutex_destroy(&mona->finished_eater_mutex);
-    pthread_mutex_destroy(&mona->printf_n_stop_mutex);
-}
 
 // initiate up the monitor struct along with the main needed identity information.
 int prep_mona_n_eaters_pre_threads(t_monitor *mona)
