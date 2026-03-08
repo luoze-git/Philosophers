@@ -1,63 +1,65 @@
 #ifndef PHILO_H
-#define PHILO_H
+# define PHILO_H
 
-#include <unistd.h>
-#include <pthread.h>
-#include <stddef.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <limits.h>
+# include <limits.h>
+# include <pthread.h>
+# include <stddef.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/time.h>
+# include <sys/types.h>
+# include <unistd.h>
 
-typedef struct s_monitor t_monitor;
+typedef struct s_monitor	t_monitor;
 
 typedef struct s_eater
 {
-	int id;
-	long last_eating_time_abs;
-	int meals_eaten;
-	pthread_t thread_id;
-	pthread_mutex_t *right_fork;
-	pthread_mutex_t *left_fork;
-	pthread_mutex_t meal_state;
-	t_monitor *ptr_mona;
-} t_eater;
+	int						id;
+	long					last_eating_time_abs;
+	int						meals_eaten;
+	pthread_t				thread_id;
+	pthread_mutex_t			*right_fork;
+	pthread_mutex_t			*left_fork;
+	pthread_mutex_t			meal_state;
+	t_monitor				*ptr_mona;
+}							t_eater;
 
 typedef struct s_monitor
 {
-	int num_eater;
-	long time_to_die;
-	long time_to_eat;
-	long time_to_sleep;
-	int must_eat_count;
-	int finished_eater;
-	int stop_flag;
-	long start_time_abs;
-	pthread_mutex_t finished_eater_mutex;
-	pthread_mutex_t *forks;
-	pthread_mutex_t printf_n_stop_mutex;
-	t_eater *eater;
-	pthread_t monitor_thread;
-} t_monitor;
+	int						num_eater;
+	long					time_to_die;
+	long					time_to_eat;
+	long					time_to_sleep;
+	int						must_eat_count;
+	int						finished_eater;
+	int						stop_flag;
+	long					start_time_abs;
+	pthread_mutex_t			finished_eater_mutex;
+	pthread_mutex_t			*forks;
+	pthread_mutex_t			printf_n_stop_mutex;
+	t_eater					*eater;
+	pthread_t				monitor_thread;
+}							t_monitor;
+void						join_multi_threads(t_monitor *mona, int num);
 
-int parse_args(t_monitor *mona, int argc, char **argv);
-int prep_mona_n_eaters_pre_threads(t_monitor *mona);
-void destroy_eater_mutex(t_eater *eater, int num);
-long ft_atol_assume_legit_input(char *str);
-long get_current_absolute_time_in_ms(void);
-int stop_simulation_by_reading_stop_flag(t_eater *eater);
-void print_live_state(t_eater *eater, char *msg);
-void print_death_n_set_stop(t_eater *eater, char *msg);
+int							parse_args(t_monitor *mona, int argc, char **argv);
+int							prep_mona_n_eaters_pre_threads(t_monitor *mona);
+void						destroy_eater_mutex(t_eater *eater, int num);
+long						ft_atol_assume_legit_input(char *str);
+long						get_current_absolute_time_in_ms(void);
+int							stop_simulation_by_reading_stop_flag(t_eater *eater);
+void						print_live_state(t_eater *eater, char *msg);
+void						print_death_n_set_stop(t_eater *eater, char *msg);
 
-void *monitor_routine(void *arg);
-void *eater_routine(void *arg);
+void						*monitor_routine(void *arg);
+void						*eater_routine(void *arg);
 
-void set_stop_flag_with_mutex(t_monitor *mona);
+void						set_stop_flag_with_mutex(t_monitor *mona);
 
-void free_all_malloc_d(t_monitor *mona);
-void destroy_mutex_array(pthread_mutex_t *mutex, int num);
-void destroy_mona_mutex(t_monitor *mona);
+void						free_all_malloc_d(t_monitor *mona);
+void						destroy_mutex_array(pthread_mutex_t *mutex,
+								int num);
+void						destroy_mona_mutex(t_monitor *mona);
 
 /*init before spawning threads*/
 
