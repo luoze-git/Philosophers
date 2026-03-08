@@ -1,6 +1,6 @@
 #include "philo.h"
 
-// todo: look into 1. why the name of left fork and right fork is needed - to simplify the problem.  2. circular fork is neater
+// why the variables of left fork and right fork is needed - to simplify the problem plus the circular fork is neater.
 
 static int init_eaters(t_monitor *mona)
 {
@@ -28,7 +28,6 @@ static int init_eaters(t_monitor *mona)
     return 0;
 }
 
-// todo3: destruct all mutex before free mem and after unlocked and not in use.
 static int init_for_printf_n_stop_flag_n_finished(t_monitor *mona)
 {
     if (pthread_mutex_init(&mona->printf_n_stop_mutex, NULL) != 0)

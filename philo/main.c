@@ -7,7 +7,7 @@
     void *arg
 );
 */
-
+//todo: test out with valgrind
 int create_threads(t_monitor *mona)
 {
     int i;

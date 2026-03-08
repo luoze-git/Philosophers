@@ -21,7 +21,6 @@ static int check_chars_are_numeric_and_positive(int argc, char **argv)
     }
     return (0);
 }
-// todo: check init fully
 //  int int int int int check int types. all args is specified to be int.
 static int check_integer4B_overflow(int argc, char **argv)
 {
@@ -88,11 +87,13 @@ static void load_parsed_args(t_monitor *mona, int argc, char **argv)
         mona->must_eat_count = -1;
 }
 
-// todo: confirm the return strategy
 int pre_terminate(t_monitor *mona)
 {
     if (mona->must_eat_count == 0)
+    {
+        write(1, "0 meals", 7);
         return 1;
+    }    
     return 0;
 }
 /// @brief Precheck input satisfy the format. Then load the args into mona.
@@ -109,6 +110,6 @@ int parse_args(t_monitor *mona, int argc, char **argv)
     }
     load_parsed_args(mona, argc, argv);
     if (pre_terminate(mona))
-        return 2;
+        return 1; 
     return (0);
 }

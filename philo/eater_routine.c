@@ -40,7 +40,6 @@ void lonely_eater(t_eater *eater)
 // But you can also run theoretically forever.
 // that death occurs when the must_eat_count reaches.
 // Now the questions narrows to: forks aquirement strategy to prevent deadlock.
-// todo: After that, if death occur, make that thread return provided they did not.
 void eat(t_eater *eater)
 {
     if (eater->id % 2 == 0)
