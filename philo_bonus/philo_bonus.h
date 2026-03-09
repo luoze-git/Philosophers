@@ -6,7 +6,30 @@
 #include <stddef.h>
 #include <sys/time.h>
 #include <sys/types.h>
+#include <limits.h>
 
+typedef struct s_eater
+{
+    int id;
+    long last_eating_time_abs;
+    int meals_eaten;
+    t_parent *ptr_mom;
+} t_eater;
+
+typedef struct s_parent
+{
+    int num_eater;
+    long time_to_die;
+    long time_to_eat;
+    long time_to_sleep;
+    int must_eat_count;
+    int finished_eater;
+    int stop_flag;
+    long start_time_abs;
+} t_parent;
+
+long get_current_absolute_time_in_ms(void);
+long ft_atol_assume_legit_input(char *str);
 // /* Allowed external functions (bonus) */
 // extern void	*memset(void *s, int c, size_t n);
 // extern int	printf(const char *format, ...);
