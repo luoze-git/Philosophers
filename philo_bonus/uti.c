@@ -43,7 +43,7 @@ void	print_live_state(t_eater *eater, char *msg)
 	}
 }
 
-void	print_death_n_set_stop(t_eater *eater, char *msg)
+void	print_death_n_set_stop_n_never_post_sem(t_eater *eater, char *msg)
 {
 	long	curr_time;
 
@@ -54,7 +54,6 @@ void	print_death_n_set_stop(t_eater *eater, char *msg)
 	pthread_mutex_unlock(&eater->mutex_eater);
 	sem_wait(eater->ptr_mama->sem_printf);
 	printf("%-6ld %d %s\n", curr_time, eater->id, msg);
-	sem_post(eater->ptr_mama->sem_printf);
 }
 
 int	stop_simulation_by_reading_stop_flag(t_eater *eater)

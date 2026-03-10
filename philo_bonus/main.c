@@ -1,14 +1,18 @@
 #include "philo_bonus.h"
 
-
 // todo: you will check all the open failed detection. Clean strategy. 
 int setup_semaphore(t_parent *mama)
 {
     sem_unlink ("\fork");
     sem_unlink("\printf");
     sem_unlink("\waiter");
-    mama->sem_forks = sem_open ("\fork" , O_CREAT, 0644, mama->num_eater);
+    
+    mama->sem_forks = sem_open ("\fork" , O_CREAT, 0644, 
+    mama->num_eater);
+    if (mama->sem_forks == SEM_FAILED)
+        return 1;
     mama->sem_printf = sem_open("\printf" ,O_CREAT, 0644 , 1);
+    if (mama->sem_printf = SEM_FAILED)
     mama->sem_waiter = sem_open ("\waiter", O_CREAT, 0644, mama->num_eater - 1);
     return 0;
 }
@@ -42,7 +46,19 @@ int start_simulation(t_parent* mama)
     return 0;
 }
 
-wait_for_return(t_parent *mama)
+void kill_cruelly_n_post_printf(t_parent *mama , pid_t died_prc)
+{
+    int i;
+    i = 0;
+    while (i < mama->num_eater)
+    {
+        if (mama->eater_pid[i] != died_prc)
+            kill(mama->eater_pid[i]);
+        i++;
+    }
+}
+
+void wait_for_return(t_parent *mama)
 {
     int i;
     int returnd_pid;
@@ -54,10 +70,12 @@ wait_for_return(t_parent *mama)
     {
         returnd_pid = waitpid(-1, &status, 0);
         if (status == 1)
-            send_died_stop_signal(mama);
+        {
+            kill_cruelly_n_post_printf(mama, returnd_pid);
+            return;
+        }
         i++;
     }
-
 }
 
 int main(int argc, char* argv[])

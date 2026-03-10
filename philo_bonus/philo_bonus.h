@@ -8,7 +8,12 @@
 #include <sys/types.h>
 #include <limits.h>
 
-#include <fcntl.h>
+#include <fcntl.h> // for O_CREAT
+
+#define EXIT_DEAD 1
+#define EXIT_EATER_FULL 2
+
+typedef struct s_parent t_parent;
 
 typedef struct s_eater
 {
@@ -40,13 +45,13 @@ long ft_atol_assume_legit_input(char *str);
 void join_multi_threads(t_parent *mama, int num);
 
 int parse_args(t_parent *mama, int argc, char **argv);
-int prep_mona_n_eaters_pre_threads(t_parent *mama);
+int prep_mama_n_eaters_pre_threads(t_parent *mama);
 void destroy_eater_mutex(t_eater *eater, int num);
 long ft_atol_assume_legit_input(char *str);
 long get_curr_time_absolute_in_ms(void);
 int stop_simulation_by_reading_stop_flag(t_eater *eater);
 void print_live_state(t_eater *eater, char *msg);
-void print_death_n_set_stop(t_eater *eater, char *msg);
+void print_death_n_set_stop_n_never_post_sem(t_eater *eater, char *msg);
 
 void *monitor_routine(void *arg);
 void *eater_routine(void *arg);
@@ -56,7 +61,7 @@ void set_stop_flag_with_mutex(t_parent *mama);
 void free_all_malloc_d(t_parent *mama);
 void destroy_mutex_array(pthread_mutex_t *mutex,
                          int num);
-void destroy_mona_mutex(t_parent *mama);
+void destroy_mama_mutex(t_parent *mama);
 // /* Allowed external functions (bonus) */
 // extern void	*memset(void *s, int c, size_t n);
 // extern int	printf(const char *format, ...);

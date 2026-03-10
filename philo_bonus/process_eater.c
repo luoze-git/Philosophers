@@ -40,7 +40,7 @@ void update_last_eating_time(t_eater *eater)
         if (eater->meals_eaten == mse)
         {
             //todo: clean 
-            exit(EATER_FULL);
+            exit(EXIT_EATER_FULL);
         }
     }
 }
@@ -82,6 +82,7 @@ int init_eater(t_eater *eater)
     return 0;
 }
 
+
 eater_transform(t_parent *mama , int id_passed)
 {
     t_eater eater;
@@ -91,9 +92,6 @@ eater_transform(t_parent *mama , int id_passed)
     if (init_eater(&eater))
         return ;
     create_eating_thread(mama , eater);
-    if (start_monitoring(mama))
-        exit (DEAD);
-    else        
-        exit (must_eat_done);
+    if (start_monitoring(&eater))
+        exit (EXIT_DEAD);
 }
-//todo: git commit current change: in batch 
