@@ -14,3 +14,6 @@ To check the states of threads, do:.
 
 
 
+AI use: 
+In the developing process, AI is used to help learn basic concepts such as what is inpreemipir system, interleaving features of OS system, what problem this project simulates. 
+In the testing process, AI help with generating edge cases to debug the program.   
