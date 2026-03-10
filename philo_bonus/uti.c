@@ -1,7 +1,7 @@
 #include "philo_bonus.h"
 
 // get current time and transform it to milliseconds. return -1 on error
-long	get_current_absolute_time_in_ms(void)
+long	get_curr_time_absolute_in_ms(void)
 {
 	long			now;
 	struct timeval	tv;
@@ -29,39 +29,42 @@ long ft_atol_assume_legit_input(char *str)
 	return (result);
 }
 
-// void	print_live_state(t_eater *eater, char *msg)
-// {
-// 	long	relative_printed_t;
+void	print_live_state(t_eater *eater, char *msg)
+{
+	long	curr_time;
 
-// 	relative_printed_t = get_current_absolute_time_in_ms()
-// 		- eater->ptr_mona->start_time_abs;
-// 	if (!stop_simulation_by_reading_stop_flag(eater))
-// 	{
-// 		pthread_mutex_lock(&eater->ptr_mona->printf_n_stop_mutex);
-// 		printf("%-6ld %d %s\n", relative_printed_t, eater->id, msg);
-// 		pthread_mutex_unlock(&eater->ptr_mona->printf_n_stop_mutex);
-// 	}
-// }
+	curr_time = get_curr_time_absolute_in_ms()
+		- eater->ptr_mama->start_time_abs;
+	if (!stop_simulation_by_reading_stop_flag(eater))
+	{
+		sem_wait(eater->ptr_mama->sem_printf);
+		printf("%-6ld %d %s\n", curr_time, eater->id, msg);
+		sem_post(eater->ptr_mama->sem_printf);
+	}
+}
 
-// void	print_death_n_set_stop(t_eater *eater, char *msg)
-// {
-// 	long	relative_printed_t;
+void	print_death_n_set_stop(t_eater *eater, char *msg)
+{
+	long	curr_time;
 
-// 	relative_printed_t = get_current_absolute_time_in_ms()
-// 		- eater->ptr_mona->start_time_abs;
-// 	pthread_mutex_lock(&eater->ptr_mona->printf_n_stop_mutex);
-// 	eater->ptr_mona->stop_flag = 1;
-// 	printf("%-6ld %d %s\n", relative_printed_t, eater->id, msg);
-// 	pthread_mutex_unlock(&eater->ptr_mona->printf_n_stop_mutex);
-// }
-// int	stop_simulation_by_reading_stop_flag(t_eater *eater)
-// {
-// 	pthread_mutex_lock(&eater->ptr_mona->printf_n_stop_mutex);
-// 	if (eater->ptr_mona->stop_flag)
-// 	{
-// 		pthread_mutex_unlock(&eater->ptr_mona->printf_n_stop_mutex);
-// 		return (1);
-// 	}
-// 	pthread_mutex_unlock(&eater->ptr_mona->printf_n_stop_mutex);
-// 	return (0);
-// }
+	curr_time = get_curr_time_absolute_in_ms()
+		- eater->ptr_mama->start_time_abs;
+	pthread_mutex_lock(&eater->mutex_eater);
+	eater->stop_flag = 1;
+	pthread_mutex_unlock(&eater->mutex_eater);
+	sem_wait(eater->ptr_mama->sem_printf);
+	printf("%-6ld %d %s\n", curr_time, eater->id, msg);
+	sem_post(eater->ptr_mama->sem_printf);
+}
+
+int	stop_simulation_by_reading_stop_flag(t_eater *eater)
+{
+	pthread_mutex_lock(&eater->mutex_eater);
+	if (eater->stop_flag)
+	{
+		pthread_mutex_unlock(&eater->mutex_eater);
+		return (1);
+	}
+	pthread_mutex_unlock(&eater->mutex_eater);
+	return (0);
+}
