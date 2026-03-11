@@ -4,7 +4,7 @@ int init_mama(t_parent *mama)
 {
     if (setup_semaphore(mama))
         return 1;
-    mama->finished_eater = 0;
+    mama->exit_code = 0 ;
     mama->start_time_abs = get_curr_time_absolute_in_ms();
     // here no need to clean anything
     mama->eater_pid = malloc(mama->num_eater * sizeof(*(mama->eater_pid)));
