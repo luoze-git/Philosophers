@@ -6,7 +6,7 @@ static int check_chars_are_numeric_and_positive(int argc, char **argv)
 {
 	int i;
 	int j;
-
+	
 	i = 1;
 	while (i < argc)
 	{

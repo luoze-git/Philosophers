@@ -10,8 +10,8 @@
 
 #include <fcntl.h> // for O_CREAT
 
-#define EXIT_DEAD 1
-#define EXIT_EATER_FULL 2
+#define DEAD 1
+#define EATER_FULL 2
 
 typedef struct s_parent t_parent;
 
@@ -22,6 +22,7 @@ typedef struct s_eater
     int meals_eaten;
     int stop_flag;
     pthread_mutex_t mutex_eater;
+    pthread_t thread_eater_eater;
     t_parent *ptr_mama;
 } t_eater;
 
@@ -40,23 +41,47 @@ typedef struct s_parent
     long start_time_abs;
 } t_parent;
 
+/* Utility */
 long get_curr_time_absolute_in_ms(void);
 long ft_atol_assume_legit_input(char *str);
-void join_multi_threads(t_parent *mama, int num);
 
+/* Input parsing */
 int parse_args(t_parent *mama, int argc, char **argv);
-int prep_mama_n_eaters_pre_threads(t_parent *mama);
-void destroy_eater_mutex(t_eater *eater, int num);
-long ft_atol_assume_legit_input(char *str);
-long get_curr_time_absolute_in_ms(void);
-int stop_simulation_by_reading_stop_flag(t_eater *eater);
+
+/* Initialization */
+int init_mama(t_parent *mama);
+int setup_semaphore(t_parent *mama);
+
+/* Simulation control */
+int start_simulation(t_parent *mama);
+void wait_for_return(t_parent *mama);
+
+/* Eater process */
+int start_eater_thread(t_parent *mama, t_eater *eater);
+int start_monitoring(t_eater *eater);
+int init_eater(t_eater *eater, t_parent *mama);
+int eater_transform(t_parent *mama, int id_passed);
+
+int eater_is_dead(t_eater *eater, long time_to_die);
+int eater_is_full(t_eater *eater);
+
+/* Eater thread routines */
+void *eater_routine(void *arg);
+void lonely_eater(t_eater *eater);
+void eat(t_eater *eater);
+void update_eating_state(t_eater *eater);
+void sleep_eater(t_eater *eater);
+
+/* Printing / state */
 void print_live_state(t_eater *eater, char *msg);
 void print_death_n_set_stop_n_never_post_sem(t_eater *eater, char *msg);
 
-void *monitor_routine(void *arg);
-void *eater_routine(void *arg);
-
+/* Control flags */
+int stop_simulation_by_reading_stop_flag(t_eater *eater);
 void set_stop_flag_with_mutex(t_parent *mama);
+
+/* Cleanup */
+void kill_cruelly_n_post_printf(t_parent *mama, pid_t died_prc);
 
 void free_all_malloc_d(t_parent *mama);
 void destroy_mutex_array(pthread_mutex_t *mutex,
