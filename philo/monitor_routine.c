@@ -10,14 +10,14 @@ void	set_stop_flag_with_mutex(t_monitor *mona)
 
 int	thread_is_dead(t_eater *eater, long time_to_die)
 {
-	pthread_mutex_lock(&eater->meal_state);
+	pthread_mutex_lock(&eater->state_mutex);
 	if (get_current_absolute_time_in_ms()
 		- eater->last_eating_time_abs > time_to_die)
 	{
-		pthread_mutex_unlock(&eater->meal_state);
+		pthread_mutex_unlock(&eater->state_mutex);
 		return (1);
 	}
-	pthread_mutex_unlock(&eater->meal_state);
+	pthread_mutex_unlock(&eater->state_mutex);
 	return (0);
 }
 

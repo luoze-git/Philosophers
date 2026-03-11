@@ -5,9 +5,9 @@ void	update_last_eating_time(t_eater *eater)
 	int	mse;
 
 	mse = eater->ptr_mona->must_eat_count;
-	pthread_mutex_lock(&eater->meal_state);
+	pthread_mutex_lock(&eater->state_mutex);
 	eater->last_eating_time_abs = get_current_absolute_time_in_ms();
-	pthread_mutex_unlock(&eater->meal_state);
+	pthread_mutex_unlock(&eater->state_mutex);
 	if (mse != -1)
 	{
 		eater->meals_eaten++;
@@ -16,7 +16,7 @@ void	update_last_eating_time(t_eater *eater)
 			pthread_mutex_lock(&eater->ptr_mona->finished_eater_mutex);
 			eater->ptr_mona->finished_eater++;
 			pthread_mutex_unlock(&eater->ptr_mona->finished_eater_mutex);
-		}
+		}~
 	}
 }
 

@@ -20,7 +20,7 @@ typedef struct s_eater
 	pthread_t				thread_id;
 	pthread_mutex_t			*right_fork;
 	pthread_mutex_t			*left_fork;
-	pthread_mutex_t			meal_state;
+	pthread_mutex_t 		state_mutex;
 	t_monitor				*ptr_mona;
 }							t_eater;
 
