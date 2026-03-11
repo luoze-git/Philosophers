@@ -2,12 +2,14 @@
 #define PHILO_BONUS_H
 
 #include <pthread.h>
+#include <unistd.h>
 #include <semaphore.h>
-#include <stddef.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <sys/time.h>
-#include <sys/types.h>
+#include <sys/wait.h>
 #include <limits.h>
-
+#include <signal.h>
 #include <fcntl.h> // for O_CREAT
 
 #define DEAD 1
@@ -55,10 +57,10 @@ int setup_semaphore(t_parent *mama);
 
 /* Simulation control */
 int spawn_children_processes(t_parent *mama);
-void wait_for_return(t_parent *mama);
+void wait_for_children_exit(t_parent *mama);
 
 /* Eater process */
-int create_eater_routine_thread(t_parent *mama, t_eater *eater);
+int create_eater_routine_thread( t_eater *eater);
 int start_monitoring(t_eater *eater);
 int init_eater(t_eater *eater, t_parent *mama);
 int eater_transform(t_parent *mama, int id_passed);
@@ -79,14 +81,13 @@ void print_death_n_set_stop_n_never_post_sem(t_eater *eater, char *msg);
 
 /* Control flags */
 int stop_simulation_by_reading_stop_flag(t_eater *eater);
-void set_stop_flag_with_mutex(t_parent *mama);
+void set_stop_flag_with_mutex(t_eater *eater);
 
 /* Cleanup */
-void kill_cruelly_n_post_printf(t_parent *mama, pid_t died_prc);
+void kill_cruelly(t_parent *mama, pid_t died_prc);
 
 void free_all_malloc_d(t_parent *mama);
-void destroy_mutex_array(pthread_mutex_t *mutex,
-                         int num);
+void destroy_mutex_array(pthread_mutex_t *mutex, int num);
 void destroy_mama_mutex(t_parent *mama);
 // /* Allowed external functions (bonus) */
 // extern void	*memset(void *s, int c, size_t n);

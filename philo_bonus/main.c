@@ -14,13 +14,13 @@ int spawn_children_processes(t_parent* mama)
         if (mama->eater_pid[i] == 0)
             eater_transform(mama, i + 1);
         if (mama->eater_pid[i] == -1)
-            deal_with_mallocc_clean_n_pid(mama);
+            continue;
         i++;
     }
     return 0;
 }
 
-void wait_for_return(t_parent *mama)
+void wait_for_children_exit(t_parent *mama)
 {
     int i;
     int returnd_pid;
@@ -31,13 +31,20 @@ void wait_for_return(t_parent *mama)
     while (i < mama->num_eater)
     {
         returnd_pid = waitpid(-1, &status, 0);
-        if (status == 1)
+        if (status == DEAD)
         {
-            kill_cruelly_n_post_printf(mama, returnd_pid);
-            return;
+            kill_cruelly(mama, returnd_pid);
+            sem_post(mama->sem_printf);
+            exit(0);
+        }
+        if (status == ERR)
+        {
+            kill_cruelly(mama, returnd_pid);
+            exit(1);
         }
         i++;
     }
+    exit(0);
 }
 
 int main(int argc, char* argv[])
@@ -49,6 +56,6 @@ int main(int argc, char* argv[])
         return 1 ;
     if (spawn_children_processes(&mama))
         return 1; 
-    wait_for_return(&mama);
+    wait_for_children_exit(&mama);
     return 0 ;
 }

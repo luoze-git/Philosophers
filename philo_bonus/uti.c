@@ -47,8 +47,7 @@ void	print_death_n_set_stop_n_never_post_sem(t_eater *eater, char *msg)
 {
 	long	curr_time;
 
-	curr_time = get_curr_time_absolute_in_ms()
-		- eater->ptr_mama->start_time_abs;
+	curr_time = get_curr_time_absolute_in_ms() - eater->ptr_mama->start_time_abs;
 	pthread_mutex_lock(&eater->mutex_eater);
 	eater->stop_flag = 1;
 	pthread_mutex_unlock(&eater->mutex_eater);

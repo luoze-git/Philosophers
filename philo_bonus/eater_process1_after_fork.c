@@ -1,6 +1,6 @@
 #include "philo_bonus.h"
 
-int create_eater_routine_thread(t_parent *mama, t_eater *eater)
+int create_eater_routine_thread( t_eater *eater)
 {
     if (pthread_create(&eater->thread_eater_eater, NULL, eater_routine, eater) != 0)
         return 1;
@@ -49,7 +49,7 @@ int eater_transform(t_parent *mama , int id_passed)
     // this thread will remain as the monitor
     if (init_eater(&eater, mama))
         exit(ERR);
-    if (create_eater_routine_thread(mama , &eater))
+    if (create_eater_routine_thread( &eater))
         exit(ERR);
     exit(start_monitoring(&eater));
 }
