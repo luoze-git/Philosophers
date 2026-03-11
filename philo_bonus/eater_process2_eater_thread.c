@@ -47,7 +47,7 @@ void *eater_routine(void *arg)
     eater = (t_eater *)arg;
     if (eater->ptr_mama->num_eater > 1)
     {
-        while (!stop_simulation_by_reading_stop_flag(eater))
+        while (!stop_flag_is_not_1(eater))
         {
             eat(eater);
             sleep_eater(eater);

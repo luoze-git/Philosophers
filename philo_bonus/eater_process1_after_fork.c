@@ -44,12 +44,14 @@ int start_monitoring(t_eater *eater)
 int eater_transform(t_parent *mama , int id_passed)
 {
     t_eater eater;
-    
+    int monitor_code;
     eater.id = id_passed;
     // this thread will remain as the monitor
     if (init_eater(&eater, mama))
         exit(ERR);
-    if (create_eater_routine_thread( &eater))
+    if (create_eater_routine_thread(&eater))
         exit(ERR);
-    exit(start_monitoring(&eater));
+    monitor_code = start_monitoring(&eater); 
+    join_eater_routine_thread(&eater);
+    exit(monitor_code);
 }
