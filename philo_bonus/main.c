@@ -4,7 +4,7 @@
 
 
 
-int start_simulation(t_parent* mama)
+int spawn_children_processes(t_parent* mama)
 {
     int i;
     i = 0;
@@ -19,8 +19,6 @@ int start_simulation(t_parent* mama)
     }
     return 0;
 }
-
-
 
 void wait_for_return(t_parent *mama)
 {
@@ -49,7 +47,7 @@ int main(int argc, char* argv[])
         return 1;
     if (init_mama(&mama))
         return 1 ;
-    if (start_simulation(&mama))
+    if (spawn_children_processes(&mama))
         return 1; 
     wait_for_return(&mama);
     return 0 ;

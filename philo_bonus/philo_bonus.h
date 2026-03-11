@@ -12,6 +12,7 @@
 
 #define DEAD 1
 #define EATER_FULL 2
+#define ERR 3
 
 typedef struct s_parent t_parent;
 
@@ -53,11 +54,11 @@ int init_mama(t_parent *mama);
 int setup_semaphore(t_parent *mama);
 
 /* Simulation control */
-int start_simulation(t_parent *mama);
+int spawn_children_processes(t_parent *mama);
 void wait_for_return(t_parent *mama);
 
 /* Eater process */
-int start_eater_thread(t_parent *mama, t_eater *eater);
+int create_eater_routine_thread(t_parent *mama, t_eater *eater);
 int start_monitoring(t_eater *eater);
 int init_eater(t_eater *eater, t_parent *mama);
 int eater_transform(t_parent *mama, int id_passed);
