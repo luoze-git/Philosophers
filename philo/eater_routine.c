@@ -16,7 +16,7 @@ void	update_last_eating_time(t_eater *eater)
 			pthread_mutex_lock(&eater->ptr_mona->finished_eater_mutex);
 			eater->ptr_mona->finished_eater++;
 			pthread_mutex_unlock(&eater->ptr_mona->finished_eater_mutex);
-		}~
+		}
 	}
 }
 
