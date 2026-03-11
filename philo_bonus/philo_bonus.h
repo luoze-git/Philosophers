@@ -40,7 +40,7 @@ typedef struct s_parent
     sem_t *sem_forks;
     sem_t *sem_printf;
     sem_t *sem_waiter;
-    int finished_eater;
+    int  exit_code;
     long start_time_abs;
 } t_parent;
 
@@ -80,11 +80,21 @@ void print_live_state(t_eater *eater, char *msg);
 void print_death_n_set_stop_n_never_post_sem(t_eater *eater, char *msg);
 
 /* Control flags */
-int stop_simulation_by_reading_stop_flag(t_eater *eater);
+int stop_flag_is_not_1(t_eater *eater);
 void set_stop_flag_with_mutex(t_eater *eater);
 
 /* Cleanup */
-void kill_cruelly(t_parent *mama, pid_t died_prc);
+void kill_cruelly_n_assign_exit_code(t_parent *mama, pid_t died_prc, int exit_code);
+
+void release_sem_printf_on_death(t_parent *mama);
+
+void clean_sems(t_parent *mama);
+
+void free_malloc_d(t_parent *mama);
+
+void join_eater_routine_thread(t_eater* eater);
+
+
 
 void free_all_malloc_d(t_parent *mama);
 void destroy_mutex_array(pthread_mutex_t *mutex, int num);

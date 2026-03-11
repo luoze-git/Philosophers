@@ -35,7 +35,7 @@ void	print_live_state(t_eater *eater, char *msg)
 
 	curr_time = get_curr_time_absolute_in_ms()
 		- eater->ptr_mama->start_time_abs;
-	if (!stop_simulation_by_reading_stop_flag(eater))
+	if (!stop_flag_is_not_1(eater))
 	{
 		sem_wait(eater->ptr_mama->sem_printf);
 		printf("%-6ld %d %s\n", curr_time, eater->id, msg);
@@ -55,7 +55,7 @@ void	print_death_n_set_stop_n_never_post_sem(t_eater *eater, char *msg)
 	printf("%-6ld %d %s\n", curr_time, eater->id, msg);
 }
 
-int	stop_simulation_by_reading_stop_flag(t_eater *eater)
+int	stop_flag_is_not_1(t_eater *eater)
 {
 	pthread_mutex_lock(&eater->mutex_eater);
 	if (eater->stop_flag)
