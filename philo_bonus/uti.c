@@ -12,7 +12,7 @@ long	get_curr_time_absolute_in_ms(void)
 	return (now);
 }
 
-long ft_atol_assume_legit_input(char *str)
+long	ft_atol_assume_legit_input(char *str)
 {
 	int		i;
 	long	result;
@@ -43,7 +43,7 @@ void	print_live_state(t_eater *eater, char *msg)
 	}
 }
 
-int stop_flag_is_not_1(t_eater *eater)
+int	stop_flag_is_not_1(t_eater *eater)
 {
 	pthread_mutex_lock(&eater->mutex_eater);
 	if (eater->stop_flag)
@@ -54,4 +54,3 @@ int stop_flag_is_not_1(t_eater *eater)
 	pthread_mutex_unlock(&eater->mutex_eater);
 	return (0);
 }
-

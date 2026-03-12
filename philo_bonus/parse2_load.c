@@ -1,14 +1,14 @@
 #include "philo_bonus.h"
 
-static void load_parsed_args(t_parent *mama, int argc, char **argv);
-static int pre_terminate(t_parent *mama);
+static void	load_parsed_args(t_parent *mama, int argc, char **argv);
+static int	pre_terminate(t_parent *mama);
 
 /// @brief Precheck input satisfy the format. Then load the args into mama.
 /// @param mama
 /// @param argc
 /// @param argv
 /// @return 0 if suc. 1 if failed.
-int parse_args(t_parent *mama, int argc, char **argv)
+int	parse_args(t_parent *mama, int argc, char **argv)
 {
 	if (check_args_legitimacy(argc, argv))
 	{
@@ -22,12 +22,12 @@ int parse_args(t_parent *mama, int argc, char **argv)
 }
 
 /*
-./philo number_of_philosophers time_to_die 
-time_to_eat time_to_sleep 
+./philo number_of_philosophers time_to_die
+time_to_eat time_to_sleep
 [number_of_times_each_philosopher_must_eat]
 */
 
-static void load_parsed_args(t_parent *mama, int argc, char **argv)
+static void	load_parsed_args(t_parent *mama, int argc, char **argv)
 {
 	mama->num_eater = (int)ft_atol_assume_legit_input(argv[1]);
 	mama->time_to_die = ft_atol_assume_legit_input(argv[2]);
@@ -39,7 +39,7 @@ static void load_parsed_args(t_parent *mama, int argc, char **argv)
 		mama->must_eat_count = -1;
 }
 
-static int pre_terminate(t_parent *mama)
+static int	pre_terminate(t_parent *mama)
 {
 	if (mama->must_eat_count == 0)
 	{
