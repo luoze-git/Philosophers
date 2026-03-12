@@ -2,6 +2,7 @@
 
 static int eater_is_dead(t_eater *eater, long time_to_die);
 static int eater_is_full(t_eater *eater);
+static void print_death_n_set_stop_n_never_post_sem(t_eater *eater, char *msg);
 static void set_stop_flag_with_mutex(t_eater *eater);
 
 int start_monitoring(t_eater *eater)
@@ -23,6 +24,18 @@ int start_monitoring(t_eater *eater)
 		}
 		usleep(1000);
 	}
+}
+
+static void print_death_n_set_stop_n_never_post_sem(t_eater *eater, char *msg)
+{
+	long curr_time;
+
+	curr_time = get_curr_time_absolute_in_ms() - eater->ptr_mama->start_time_abs;
+	pthread_mutex_lock(&eater->mutex_eater);
+	eater->stop_flag = 1;
+	pthread_mutex_unlock(&eater->mutex_eater);
+	sem_wait(eater->ptr_mama->sem_printf);
+	printf("%-6ld %d %s\n", curr_time, eater->id, msg);
 }
 
 static int eater_is_dead(t_eater *eater, long time_to_die)
