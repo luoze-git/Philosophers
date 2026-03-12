@@ -1,6 +1,5 @@
 #include "philo_bonus.h"
 
-static int start_monitoring(t_eater *eater);
 static int init_eater(t_eater *eater , t_parent *mama);
 static int create_eater_routine_thread( t_eater *eater);
 
@@ -41,23 +40,4 @@ static int init_eater(t_eater *eater, t_parent *mama)
     return 0;
 }
 
-static int start_monitoring(t_eater *eater)
-{
-    int i;
 
-    i = 0;
-    while (1)
-    {
-        if (eater_is_dead(eater, eater->ptr_mama->time_to_die))
-        {
-            print_death_n_set_stop_n_never_post_sem(eater, "died");
-            return (DEAD);
-        }
-        if (eater->ptr_mama->must_eat_count != -1 && eater_is_full(eater))
-        {
-            set_stop_flag_with_mutex(eater);
-            return (EATER_FULL);
-        }
-        usleep(1000);
-    }
-}
