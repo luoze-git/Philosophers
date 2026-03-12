@@ -12,6 +12,7 @@
 #include <signal.h>
 #include <fcntl.h> // for O_CREAT
 
+#define UNSET 0
 #define DEAD 1
 #define EATER_FULL 2
 #define ERR 3
@@ -44,61 +45,34 @@ typedef struct s_parent
     long start_time_abs;
 } t_parent;
 
-/* Utility */
-long get_curr_time_absolute_in_ms(void);
-long ft_atol_assume_legit_input(char *str);
 
 /* Input parsing */
 int parse_args(t_parent *mama, int argc, char **argv);
+int check_args_legitimacy(int argc, char **argv);
 
 /* Initialization */
 int init_mama(t_parent *mama);
-int setup_semaphore(t_parent *mama);
 
 /* Simulation control */
 int spawn_children_processes(t_parent *mama);
-void wait_for_children_exit(t_parent *mama);
 
 /* Eater process */
-int create_eater_routine_thread( t_eater *eater);
 int start_monitoring(t_eater *eater);
-int init_eater(t_eater *eater, t_parent *mama);
-int eater_transform(t_parent *mama, int id_passed);
-
-int eater_is_dead(t_eater *eater, long time_to_die);
-int eater_is_full(t_eater *eater);
-
-/* Eater thread routines */
 void *eater_routine(void *arg);
-void lonely_eater(t_eater *eater);
-void eat(t_eater *eater);
-void update_eating_state(t_eater *eater);
-void sleep_eater(t_eater *eater);
 
-/* Printing / state */
+/* Utility */
+long get_curr_time_absolute_in_ms(void);
+long ft_atol_assume_legit_input(char *str);
 void print_live_state(t_eater *eater, char *msg);
-void print_death_n_set_stop_n_never_post_sem(t_eater *eater, char *msg);
-
-/* Control flags */
 int stop_flag_is_not_1(t_eater *eater);
-void set_stop_flag_with_mutex(t_eater *eater);
+
 
 /* Cleanup */
-void kill_cruelly_n_assign_exit_code(t_parent *mama, pid_t died_prc, int exit_code);
+void clean_sems_guarded(t_parent *mama);
+void clean(t_parent *mama);
+void clean_children_process(t_eater *eater);
+void destroy_local_mutex(t_eater *eater);
 
-void release_sem_printf_on_death(t_parent *mama);
-
-void clean_sems(t_parent *mama);
-
-void free_malloc_d(t_parent *mama);
-
-void join_eater_routine_thread(t_eater* eater);
-
-
-
-void free_all_malloc_d(t_parent *mama);
-void destroy_mutex_array(pthread_mutex_t *mutex, int num);
-void destroy_mama_mutex(t_parent *mama);
 // /* Allowed external functions (bonus) */
 // extern void	*memset(void *s, int c, size_t n);
 // extern int	printf(const char *format, ...);
