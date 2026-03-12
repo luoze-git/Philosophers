@@ -43,19 +43,7 @@ void	print_live_state(t_eater *eater, char *msg)
 	}
 }
 
-void	print_death_n_set_stop_n_never_post_sem(t_eater *eater, char *msg)
-{
-	long	curr_time;
-
-	curr_time = get_curr_time_absolute_in_ms() - eater->ptr_mama->start_time_abs;
-	pthread_mutex_lock(&eater->mutex_eater);
-	eater->stop_flag = 1;
-	pthread_mutex_unlock(&eater->mutex_eater);
-	sem_wait(eater->ptr_mama->sem_printf);
-	printf("%-6ld %d %s\n", curr_time, eater->id, msg);
-}
-
-int	stop_flag_is_not_1(t_eater *eater)
+int stop_flag_is_not_1(t_eater *eater)
 {
 	pthread_mutex_lock(&eater->mutex_eater);
 	if (eater->stop_flag)
@@ -66,3 +54,4 @@ int	stop_flag_is_not_1(t_eater *eater)
 	pthread_mutex_unlock(&eater->mutex_eater);
 	return (0);
 }
+
