@@ -39,7 +39,6 @@ void sleep_eater(t_eater *eater)
 }
 
 /*usleep() take microseconds*/
-/*tothink: why putting half to sleep is needed in the beginnning to prevent instant deadlock?*/
 void *eater_routine(void *arg)
 {
     t_eater *eater;

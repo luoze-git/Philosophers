@@ -16,7 +16,7 @@ int	eater_is_dead(t_eater *eater, long time_to_die)
 int	eater_is_full(t_eater *eater)
 {
 	pthread_mutex_lock(&eater->mutex_eater);
-	if (eater->meals_eaten == eater->ptr_mama->must_eat_count)
+	if (eater->meals_eaten >= eater->ptr_mama->must_eat_count)
 	{
 		pthread_mutex_unlock(&eater->mutex_eater);
 		return (1);
@@ -31,4 +31,3 @@ void set_stop_flag_with_mutex(t_eater *eater)
 	eater->stop_flag = 1;
 	pthread_mutex_unlock(&eater->mutex_eater);
 }
-
