@@ -1,4 +1,5 @@
 #include "philo.h"
+
 /*
 // why the variables of left fork and right fork is needed
 	- to simplify the problem plus the circular fork is neater.*/
